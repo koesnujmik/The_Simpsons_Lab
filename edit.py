@@ -34,7 +34,7 @@ def trim_video_only_from_json(extract_path, json_path):
     return sub
 
 
-def generate_video_from_json(json_path, intro_video, trim_video, output_path, font_path):
+def generate_video_from_json(srt_path, json_path, intro_video, trim_video, output_path, font_path):
     # — 전체 쇼츠 해상도 및 레이아웃 설정
     FRAME_W, FRAME_H = 720, 1280
     VID_W, VID_H = 720, 480  #(직사각 모양)
@@ -96,7 +96,7 @@ def generate_video_from_json(json_path, intro_video, trim_video, output_path, fo
     
     title, subtitle, cuts = info["title"], info.get("subtitle", ""), info["cuts"]
 
-    subtitles = srt_to_json(json_path)    
+    subtitles = srt_to_json(srt_path)    
 
     # JSON의 첫 컷 start를 오프셋으로 사용
     offset = cuts[0]["start"]

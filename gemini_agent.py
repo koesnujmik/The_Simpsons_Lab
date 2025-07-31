@@ -33,6 +33,7 @@ def analyze_video(project_id: str, location: str, gcs_uri: str, prompt: str):
 
     return response.text if hasattr(response, "text") else None
 
+# LLM2: 컷 편집 JSON 설계
 def create_edit_plan(clip_info, srt_rows):
     """
     clip_info: dict (LLM1 output for a single clip)
@@ -47,6 +48,12 @@ def create_edit_plan(clip_info, srt_rows):
     clip_start_sec = hms_to_sec(clip_start_hms)
     clip_end_sec = hms_to_sec(clip_end_hms)
 
+    # 자막 중 실제로 포함되는 줄만 필터링
+    matched_rows = [r for r in srt_rows if r.end_sec >= clip_start_sec and r.start_sec <= clip_end_sec]
+    if matched_rows:
+        last_sub_end = max(r.end_sec for r in matched_rows)
+        clip_end_sec = max(clip_end_sec, last_sub_end)  # 자막이 더 늦게 끝나면 clip_end 확장
+
     # 2. 이 구간에 해당하는 SRT 자막 범위 추출
     clip_srt_rows, start_sub_id, end_sub_id = slice_srt_by_seconds(srt_rows, clip_start_sec, clip_end_sec)
 
@@ -55,7 +62,7 @@ def create_edit_plan(clip_info, srt_rows):
         {
             "id": r.id,
             "start_sec": round(r.start_sec, 3),
-            "end_sec": round(r.end_sec, 3),
+            "end_sec": min(clip_end_sec, round(r.end_sec, 3)),
             "text": r.text
         } for r in clip_srt_rows
     ], ensure_ascii=False)
@@ -81,6 +88,10 @@ def create_edit_plan(clip_info, srt_rows):
     model = GenerativeModel("gemini-2.5-pro")
     response = model.generate_content(EDIT_PROMPT, stream=False)
     print("[Gemini 응답 수신 완료]")
+
+    # Gemini 원본 응답 저장 (디버깅용)
+    with open("llm2_raw_output.txt", "w", encoding="utf-8") as f:
+        f.write(response.text if hasattr(response, "text") else "No response text")
 
     # JSON 파싱
     plan = extract_json_from_code_block(response.text)

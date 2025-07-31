@@ -112,6 +112,7 @@ def validate_plan_indices(plan, start_sub_id, end_sub_id):
         if min(sids) < s_id or max(sids) > e_id:
             raise ValueError(f"cut[{i}] subtitle_ids가 start_sub_id~end_sub_id 밖")
 
+
 def debug_and_fix_cut_ids(parsed_json, clip_start=None, clip_end=None):
     if "cuts" not in parsed_json:
         print("[에러] cuts 필드 없음")
@@ -121,6 +122,10 @@ def debug_and_fix_cut_ids(parsed_json, clip_start=None, clip_end=None):
         try:
             # --- start_sub_id ---
             sid = cut.get("start_sub_id")
+            if sid is None:
+                print(f"[보정] cut[{idx}] start_sub_id 누락 → subtitle_ids에서 추론")
+                sid = min(subtitle_ids)
+                cut["start_sub_id"] = sid
             if isinstance(sid, str) and sid.isdigit():
                 print(f"[디버그] cut[{idx}] start_sub_id 문자열 → int 변환")
                 cut["start_sub_id"] = int(sid)
@@ -132,6 +137,10 @@ def debug_and_fix_cut_ids(parsed_json, clip_start=None, clip_end=None):
 
             # --- end_sub_id ---
             eid = cut.get("end_sub_id")
+            if eid is None:
+                print(f"[보정] cut[{idx}] end_sub_id 누락 → subtitle_ids에서 추론")
+                eid = max(subtitle_ids)
+                cut["end_sub_id"] = eid
             if isinstance(eid, str) and eid.isdigit():
                 print(f"[디버그] cut[{idx}] end_sub_id 문자열 → int 변환")
                 cut["end_sub_id"] = int(eid)
@@ -146,7 +155,7 @@ def debug_and_fix_cut_ids(parsed_json, clip_start=None, clip_end=None):
             if not isinstance(subtitle_ids, list) or len(subtitle_ids) == 0:
                 raise ValueError("subtitle_ids가 비어있거나 리스트가 아님")
 
-            # --- clip 범위 초과 확인 (선택)
+            # --- clip 범위 초과 확인
             if cut.get("start", 0) < clip_start or cut.get("end", 99999) > clip_end:
                 print(f"[경고] cut[{idx}]이 clip 시간 범위를 벗어남")
 
@@ -163,11 +172,12 @@ def attach_seconds(plan, srt_rows):
     for i, cut in enumerate(plan["cuts"]):
         s_id = cut["start_sub_id"]
         e_id = cut["end_sub_id"]
+
         if s_id not in id2row or e_id not in id2row:
             raise ValueError(f"cut[{i}]의 자막 ID가 존재하지 않음: {s_id}, {e_id}")
 
-        cut["start"] = round(id2row[s_id].start_sec, 3)
-        cut["end"]   = round(id2row[e_id].end_sec, 3)
+        cut["start"] = id2row[s_id].start_sec
+        cut["end"]   = id2row[e_id].end_sec
     return plan
 
 # ------------------------------
@@ -181,6 +191,7 @@ def validate_plan_seconds(plan, clip_start_sec, clip_end_sec):
             )
         if cut["start"] >= cut["end"]:
             raise ValueError(f"cut[{i}]의 start가 end보다 크거나 같음.")
+
 
 def srt_to_json(srt_path: str):
     # 1. SRT 파일 읽기

@@ -44,6 +44,7 @@ def run_pipeline(llm1_output, srt_path, video_path, output_folder, top_k=3):
             # 최종 쇼츠 영상 생성
             final_shorts_path = os.path.join(output_folder, "video", f"final_shorts_{rank}.mp4")
             generate_video_from_json(
+                srt_path=srt_path,
                 json_path=json_path,
                 intro_video=intro_clip,
                 trim_video=trimmed_video,

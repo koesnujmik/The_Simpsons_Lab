@@ -101,7 +101,7 @@ Align them strictly with the dialogue transitions or natural scene breaks as ind
 # Output
 Return exactly 5 clips in JSON list format only, with no surrounding text or formatting.
 """
-
+# LLM2의 편집 프롬프트
 LLM2_PROMPT_TEMPLATE = Template("""
 # System Message
 You are a professional YouTube Shorts video editor and comedy scriptwriter, working on a Simpsons review channel.
@@ -224,115 +224,121 @@ Respond ONLY with a single JSON object with "title", "subtitle", and "cuts" as t
 Here is the expected format:
 
 {
-"title": "워터파크 놀이기구에 몸무게 제한이 있는 진짜 이유",
-"subtitle": "심슨 가족의 요절복통 워터파크 방문기",
+"title": "아빠한테 무한으로 조르면 생기는 일 (feat. 영혼의 절규)",
+"subtitle": "심슨 가족, 스플래시모어 워터파크 대소동",
 "cuts": [
-{
-    "start": 132.132,
-    "end": 143.101,
-    "start_sub_id": 33,
-    "end_sub_id": 40,
+    {
+    "start": 126.543,
+    "end": 130.296,
+    "start_sub_id": 30,
+    "end_sub_id": 31,
     "subtitle_ids": [
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40
+        30,
+        31
     ],
-    "narration": "광고를 보고 워터파크에 꽂힌 아이들! 아빠를 조르기 시작합니다."
-},
-{
+    "narration": "크러스티의 노골적인 워터파크 광고에 완전히 넘어가버린 바트와 리사."
+    },
+    {
+    "start": 132.132,
+    "end": 136.302,
+    "start_sub_id": 33,
+    "end_sub_id": 35,
+    "subtitle_ids": [
+        33,
+        34,
+        35
+    ],
+    "narration": "곧바로 아빠를 향한 무한 조르기 공격이 시작되는데...",
+    "editor_note": "무한 츠쿠요미 ON"
+    },
+    {
+    "start": 136.386,
+    "end": 146.229,
+    "start_sub_id": 36,
+    "end_sub_id": 42,
+    "subtitle_ids": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+    ],
+    "editor_note": "Ctrl+C, Ctrl+V, Ctrl+V, Ctrl+V..."
+    },
+    {
+    "start": 146.312,
+    "end": 154.779,
+    "start_sub_id": 43,
+    "end_sub_id": 45,
+    "subtitle_ids": [
+        43,
+        44,
+        45
+    ],
+    "narration": "결국 호머의 인내심은 한계에 도달하고 맙니다.",
+    "editor_note": "슬슬 고장나는 중 ㅋㅋㅋ"
+    },
+    {
     "start": 154.863,
     "end": 162.704,
     "start_sub_id": 46,
     "end_sub_id": 49,
     "subtitle_ids": [
-    46,
-    47,
-    48,
-    49
+        46,
+        47,
+        48,
+        49
     ],
-    "narration": "하지만 아이들의 무한 떼쓰기 공격에 결국 호머는...",
-    "editor_note": "결국 항복 ㅋㅋ"
-},
-{
+    "narration": "결국 아이들의 집요함에 처절하게 항복을 선언하는 호머.",
+    "editor_note": "이 시대 모든 아버지들의 절규"
+    },
+    {
+    "start": 162.787,
+    "end": 177.677,
+    "start_sub_id": 50,
+    "end_sub_id": 55,
+    "subtitle_ids": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+    ],
+    "narration": "그렇게 도착한 워터파크 당일... 아니 근데 아빠 복장이...?",
+    "editor_note": "상상력에 모든 걸 맡긴 패션"
+    },
+    {
+    "start": 179.888,
+    "end": 184.017,
+    "start_sub_id": 57,
+    "end_sub_id": 58,
+    "subtitle_ids": [
+        57,
+        58
+    ],
+    "narration": "몸이 너무 껴서 좌석을 뒤로 민다는데...",
+    "editor_note": "더는 갈 곳이 없다..."
+    },
+    {
     "start": 208.917,
     "end": 216.466,
     "start_sub_id": 67,
     "end_sub_id": 68,
     "subtitle_ids": [
-    67,
-    68
+        67,
+        68
     ],
-    "narration": "그렇게 도착한 워터파크! 와, 줄이 하나도 없... 네?",
-    "editor_note": "현실"
-},
-{
-    "start": 246.663,
-    "end": 255.546,
-    "start_sub_id": 77,
-    "end_sub_id": 81,
-    "subtitle_ids": [
-    77,
-    78,
-    79,
-    80,
-    81
-    ],
-    "narration": "기다리기 싫었던 호머는 기적의 꼼수를 시전합니다.",
-    "editor_note": "저걸 속네 ㅋㅋㅋ"
-},
-{
-    "start": 267.433,
-    "end": 277.944,
-    "start_sub_id": 86,
-    "end_sub_id": 90,
-    "subtitle_ids": [
-    86,
-    87,
-    88,
-    89,
-    90
-    ],
-    "narration": "새치기에 성공하고 신나게 내려가는 그 순간!",
-    "editor_note": "끼임. (※실제상황)"
-},
-{
-    "start": 279.028,
-    "end": 287.745,
-    "start_sub_id": 92,
-    "end_sub_id": 96,
-    "subtitle_ids": [
-    92,
-    93,
-    94,
-    95,
-    96
-    ],
-    "narration": "한편, 관제실에서는 이 거대한 장애물을 사람일거라곤 상상도 못하고...",
-    "editor_note": "???: 아이들로 밀어내"
-},
-{
-    "start": 306.597,
-    "end": 315.773,
-    "start_sub_id": 105,
-    "end_sub_id": 108,
-    "subtitle_ids": [
-    105,
-    106,
-    107,
-    108
-    ],
-    "narration": "결국 아이들 덕분에(?) 발사된 호머는 전국 방송 데뷔까지 하게 됩니다.",
-    "editor_note": "가벼운 소식 (물리)"
-}
+    "narration": "우여곡절 끝에 도착한 워터슬라이드. 그런데 줄이 하나도 없는 이유는...?",
+    "editor_note": "아......."
+    }
 ]
 }
 
-
 ### Clip Description
 ${description}
+
+
 """)
