@@ -12,8 +12,6 @@ def trim_intro(extract_path):
 
     intro_clip = intro.subclip(0, 1)
 
-    intro.close()
-
     return intro_clip
 
 
@@ -30,7 +28,6 @@ def trim_video_only_from_json(extract_path, json_path):
     sub  = clip.subclip(min_start, max_end)
 
     print("subclip 완료")
-    clip.close()
     return sub
 
 
