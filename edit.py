@@ -108,7 +108,8 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
     #전체 배경
     bg  = ColorClip((FRAME_W, FRAME_H), color=(0,0,0)).set_duration(dur)
-    vid_crop = intro_raw.crop(x_center=intro_raw.w/2, y_center=intro_raw.h/2,width=VID_W, height=VID_H)
+    vid_resized = intro_raw.resize(height=VID_H)
+    vid_crop = vid_resized.crop(width=VID_W, height=VID_H, x_center=vid_resized.w / 2, y_center=vid_resized.h / 2)
     vid = vid_crop.set_position(("center", video_y))
 
     # (3) 타이틀/서브타이틀 오버레이
@@ -136,7 +137,8 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
 
         # 본문도 동일한 크롭 & 중앙 배치(중심 좌표를 기준으로 좌우로 360픽셀, 상하로 240픽셀씩 잘라서 -> 720*480 영역만 추출함)
-        vid_crop = sub.crop(x_center=sub.w/2, y_center=sub.h/2,width=VID_W, height=VID_H)
+        vid_resized = sub.resize(height=VID_H)
+        vid_crop = vid_resized.crop(width=VID_W, height=VID_H, x_center=vid_resized.w / 2, y_center=vid_resized.h / 2)
         vid = vid_crop.set_position(("center", video_y))
 
         over = [
