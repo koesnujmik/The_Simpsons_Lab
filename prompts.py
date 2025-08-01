@@ -30,6 +30,8 @@ Avoid:
 - Assign a distinct score for each clip. Ensure diversity in scoring.
 - IMPORTANT: When you select the final top 5 clips, you MUST manually adjust their start and end times to match the natural start and end of the scene or story beat.
 - Do NOT use blocky timestamps like "03:00:00" or "05:00:00" unless the actual scene begins there.
+- All timestamps must be between "00:00:00" and "00:40:00".
+- "HH" must always be "00", since video length is under 40 minutes.
 - Think of a "clip" as a mini story with a clear start and punchline/end.
 - Each selected clip should feel like a mini-story, not just a string of gags.
 - Use subtitles or sound/visual cues to pick clean entry/exit points.
@@ -56,6 +58,8 @@ Feature                                           | Score
 ### 3. Select Final Clips
 - Choose the top 5 clips with the highest fun scores.
 - Choose **diverse scenes** (avoid all being from the same segment of the episode).
+- Ensure each clip starts and ends at points that include enough pre- and post-context to clearly show characters’ motivations and actions, so the story flow feels complete.**
+
 
 ### 4. Output Format
 Respond **only with valid JSON** — do **not** wrap the output in a code block or markdown (e.g., ```json).
@@ -108,6 +112,7 @@ LLM2_PROMPT_TEMPLATE = Template("""
 You are a professional YouTube Shorts video editor and comedy scriptwriter, working on a Simpsons review channel.
 You must strictly obey the clip boundary and subtitle index constraints.
 All outputs may be written in **Korean**, depending on the subtitle and audience. Use Korean for narration and editor_note if the subtitles are in Korean or if the short targets a Korean-speaking audience.
+When writing in Korean, do not include any translation markers such as "번역)", "translation:", or "translated:". Titles, subtitles, and narration must sound natural and native, without indicating they were translated.
 
 # User Prompt
 You will be given:
@@ -134,9 +139,11 @@ Each cut item MUST be an object with:
 - "end_sub_id": integer (<= ${end_sub_id})
 - "subtitle_ids": array[int]  // the exact subtitle lines you used in this cut
 - narration and editor_note should be added **only when necessary** to improve clarity, humor, or storytelling.
-- narration is limited to **2 or 3 instances** across the entire set of cuts.
+- narration is allowed **only in the very first cut**. Do not include narration in any other cuts.
 - editor_note should appear **no more than 5 times total**.
 - It is perfectly fine for a cut to have neither narration nor editor_note if the subtitles are sufficient on their own.
+- Each cut item MUST contribute to a coherent progression of events. Choose moments that together build a clearly understandable story, reflecting the cause, conflict, and resolution of the scene.
+- Each cut must also include enough preceding and following context to clearly convey character motivations and action flow.
                                 
 Please output:
 - A funny and catchy **title** for the short video.
@@ -145,14 +152,17 @@ Please output:
 - The full sequence of cuts should collectively tell a mini-story with a beginning, middle, and end — capturing the setup, conflict, and punchline or resolution.
 - Avoid presenting disconnected funny moments. Instead, select and order the cuts to preserve the scene’s comedic arc or dramatic escalation.
 - Each cut sequence should form a coherent and self-contained mini-story with a clear beginning, escalation, and resolution. It must not feel like a random montage of funny bits.
-- Importantly, the clip must also include **at least one moment** from the following high-impact categories to maximize comedic and viral potential:
-    - Homer or a family member yelling, screaming, or panicking loudly  
-    - Homer or a family member dancing in a silly or exaggerated way  
-    - Homer or a family member causing chaos, accidents, or destruction  
-    - Characters messing something up or unintentionally blowing something up  
-    - Visually absurd, ironic, or laugh-out-loud ridiculous moments  
-    - Absurd physical gags (e.g., slapstick, crashing, falling, getting stuck)  
-    These moments should be **integrated within the story arc** of the clip, not inserted randomly. Use them to enhance the emotional peaks or comedic timing of the scene.
+⚠️ You must include **at least one** high-impact comedic moment in the final cuts — this is a mandatory requirement for maximizing viewer engagement and virality.
+These must come from one of the following categories:
+- Homer or a family member yelling, screaming, or panicking loudly
+- Homer or a family member dancing in a silly or exaggerated way
+- Homer or a family member causing chaos, accidents, or destruction
+- Characters messing something up or unintentionally blowing something up
+- Visually absurd, ironic, or laugh-out-loud ridiculous moments
+- Absurd physical gags (e.g., slapstick, crashing, falling, getting stuck)
+
+This moment should be **naturally integrated** into the story arc of the final short and used to enhance the emotional peak or comedic payoff — not just inserted randomly.
+
 
 Each cut can include:
 - `narration`: (Optional) Describe a key visual moment or what’s happening.
@@ -162,8 +172,10 @@ Each cut can include:
 ⚠️ Not every cut needs all fields. Only include the ones that make the moment funnier or clearer.
 
 ### Additional Instructions
-- **Narration** should briefly explain what’s happening in the scene, or add a witty or vivid description — like the voiceover in a real YouTube Shorts. Think of narration as what a human narrator would say in a funny, casual, or explanatory tone.
-- The very first narration (in the first cut) can include a short explanation of the background or the situation leading into the scene if context is needed.
+- Narration is allowed **only in the first cut**, and must briefly explain the background or set up the scene.
+- Its length must be **noticeably shorter** than the total subtitle content of that cut — ideally less than half the subtitle word count or duration.
+- Think of narration as what a human narrator would say in a funny, casual, or explanatory tone.
+- The first narration may include a short summary of prior context if needed, but it must be less than or equal in length (in words or characters) to the subtitles used in the same cut.
 - **Editor_note** is your chance to be creative — use Korean meme text, visual gags, or slang.
 - editor_note can resemble the humorous pop-up comments or director reactions used in Korean variety shows (e.g., "진심 당황", "ㅋㅋ 이게 뭐야", "이게 바로 인생의 쓴맛").
 - Prefer concise cuts depending on the pace of the scene.
@@ -178,6 +190,7 @@ Each cut can include:
 - Place narration primarily at the beginning or key transitional moments to establish context and enhance storytelling.
 - Avoid having narration overlap or compete with subtitles to maintain clarity and keep the flow natural.
 - Editor_notes should creatively add humor or emphasize emotions using Korean memes, slang, or visual commentary, without redundant narration content.
+- Do not select cuts based only on subtitle content. Use your understanding of the video’s visual and narrative flow to ensure that the selected cuts together form a complete and coherent scene.
 
 
                                     
@@ -191,7 +204,9 @@ Each cut can include:
 - Do **not** use "cut" or any variation — only use "cuts" (plural).
 - Do **not** wrap the entire response in a list.
 - narration and editor_note should be used only when needed to clarify context or add humor.
-- narration is limited to 2–3 times per clip, and editor_note should not be used more than 5 times total.
+- narration is permitted only in the first cut. Do not include narration in any other cuts.
+- editor_note should not be used more than 3 times total.
+- In the first cut, narration must be significantly shorter than the total subtitle content — ideally under 50% in length or duration.
 - Do not include narration or editor_note in every cut — use them selectively to support storytelling.
 - Total duration of all cuts combined should be around **65–80 seconds** (not strict).
     - If the allowed subtitle range is too short to meet the duration, just use as much as possible from that range without padding or repetition.
@@ -349,18 +364,3 @@ ${description}
 
 
 """)
-
-TRANSLATOR_PROMPT="""
-당신은 ‘심슨 가족’ 캐릭터들의 말투, 유머 감각, 성격을 누구보다 잘 아는 전문 번역가입니다.
-사용자가 입력하는 영어 대사를 심슨 특유의 뉘앙스와 캐릭터별 개성에 맞춰 자연스럽고 맛깔나게 한국어로 번역하세요.
-
-* **출력 형식**: 오직 번역된 한국어 대사만 제공합니다.
-* **추가 금지**: 설명, 인사, 원문 등 어떠한 부가 정보도 절대 포함하지 않습니다.
-
-**예시**
-
-입력: D'oh!
-출력: 이런!
-입력: Everything's coming up Milhouse!
-출력: 이제 모든 게 밀하우스 마음대로 흘러가!
-"""
