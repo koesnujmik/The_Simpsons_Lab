@@ -10,12 +10,12 @@ from gemini_agent import analyze_video, create_edit_plan
 from edit import trim_video_only_from_json, trim_intro, generate_video_from_json
 
 
-def run_pipeline(llm1_output, srt_path, video_path, output_folder, top_k=3):
+def run_pipeline(llm1_output, srt_en_path, srt_kr_path, video_path, output_folder, top_k=3):
     os.makedirs(output_folder, exist_ok=True)
 
     # 1. 자막 로딩
     print("[SRT 로딩 중...]")
-    srt_rows = load_srt_with_indices(srt_path)
+    srt_rows = load_srt_with_indices(srt_en_path)
 
     # 2. LLM1 출력 → JSON 변환
     print("[LLM1 응답 파싱 중...]")
@@ -44,7 +44,7 @@ def run_pipeline(llm1_output, srt_path, video_path, output_folder, top_k=3):
             # 최종 쇼츠 영상 생성
             final_shorts_path = os.path.join(output_folder, "video", f"final_shorts_{rank}.mp4")
             generate_video_from_json(
-                srt_path=srt_path,
+                srt_path=srt_kr_path,
                 json_path=json_path,
                 intro_video=intro_clip,
                 trim_video=trimmed_video,
@@ -72,7 +72,8 @@ if __name__ == "__main__":
     if llm1_output:
         run_pipeline(
             llm1_output, 
-            config.SRT_PATH, 
+            config.SRT_EN_PATH,
+            config.SRT_KR_PATH,
             config.VIDEO_PATH, 
             config.OUTPUT_FOLDER, 
             top_k=config.TOP_K
