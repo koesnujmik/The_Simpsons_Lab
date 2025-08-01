@@ -173,6 +173,7 @@ Each cut can include:
 
 ### Additional Instructions
 - Narration is allowed **only in the first cut**, and must briefly explain the background or set up the scene.
+- Avoid using emoticons, special symbols, or any characters that may not render properly across different fonts in narration or editor_note.
 - Its length must be **noticeably shorter** than the total subtitle content of that cut — ideally less than half the subtitle word count or duration.
 - Think of narration as what a human narrator would say in a funny, casual, or explanatory tone.
 - The first narration may include a short summary of prior context if needed, but it must be less than or equal in length (in words or characters) to the subtitles used in the same cut.
