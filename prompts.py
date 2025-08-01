@@ -30,6 +30,8 @@ Avoid:
 - Assign a distinct score for each clip. Ensure diversity in scoring.
 - IMPORTANT: When you select the final top 5 clips, you MUST manually adjust their start and end times to match the natural start and end of the scene or story beat.
 - Do NOT use blocky timestamps like "03:00:00" or "05:00:00" unless the actual scene begins there.
+- All timestamps must be between "00:00:00" and "00:40:00".
+- "HH" must always be "00", since video length is under 40 minutes.
 - Think of a "clip" as a mini story with a clear start and punchline/end.
 - Each selected clip should feel like a mini-story, not just a string of gags.
 - Use subtitles or sound/visual cues to pick clean entry/exit points.
@@ -56,6 +58,8 @@ Feature                                           | Score
 ### 3. Select Final Clips
 - Choose the top 5 clips with the highest fun scores.
 - Choose **diverse scenes** (avoid all being from the same segment of the episode).
+- Ensure each clip starts and ends at points that include enough pre- and post-context to clearly show characters’ motivations and actions, so the story flow feels complete.**
+
 
 ### 4. Output Format
 Respond **only with valid JSON** — do **not** wrap the output in a code block or markdown (e.g., ```json).
@@ -108,6 +112,7 @@ LLM2_PROMPT_TEMPLATE = Template("""
 You are a professional YouTube Shorts video editor and comedy scriptwriter, working on a Simpsons review channel.
 You must strictly obey the clip boundary and subtitle index constraints.
 All outputs may be written in **Korean**, depending on the subtitle and audience. Use Korean for narration and editor_note if the subtitles are in Korean or if the short targets a Korean-speaking audience.
+When writing in Korean, do not include any translation markers such as "번역)", "translation:", or "translated:". Titles, subtitles, and narration must sound natural and native, without indicating they were translated.
 
 # User Prompt
 You will be given:
@@ -137,7 +142,8 @@ Each cut item MUST be an object with:
 - narration is allowed **only in the very first cut**. Do not include narration in any other cuts.
 - editor_note should appear **no more than 5 times total**.
 - It is perfectly fine for a cut to have neither narration nor editor_note if the subtitles are sufficient on their own.
-- Each cut must contribute to a coherent progression of events. Choose moments that together build a clearly understandable story, reflecting the cause, conflict, and resolution of the scene.
+- Each cut item MUST contribute to a coherent progression of events. Choose moments that together build a clearly understandable story, reflecting the cause, conflict, and resolution of the scene.
+- Each cut must also include enough preceding and following context to clearly convey character motivations and action flow.
                                 
 Please output:
 - A funny and catchy **title** for the short video.
