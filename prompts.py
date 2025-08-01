@@ -58,6 +58,8 @@ Feature                                           | Score
 ### 3. Select Final Clips
 - Choose the top 5 clips with the highest fun scores.
 - Choose **diverse scenes** (avoid all being from the same segment of the episode).
+- Ensure each clip starts and ends at points that include enough pre- and post-context to clearly show characters’ motivations and actions, so the story flow feels complete.**
+
 
 ### 4. Output Format
 Respond **only with valid JSON** — do **not** wrap the output in a code block or markdown (e.g., ```json).
