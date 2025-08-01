@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     run_pipeline(
         llm1_output, 
-        config.SRT_PATH, 
+        config.SRT_KR_PATH, 
         config.VIDEO_PATH, 
         config.OUTPUT_FOLDER, 
         top_k=config.TOP_K
