@@ -204,11 +204,12 @@ def srt_to_json(srt_path: str):
     # 3. 원하는 JSON 구조로 변환
     json_data = {}
     for sub in subtitles:
-        # key: index (문자열), value: start/end/text 정보
+        if sub.content == "None_None":
+            continue
         json_data[str(sub.index)] = {
             "start": sub.start.total_seconds(),
             "end":   sub.end.total_seconds(),
-            "text":  sub.content.replace('\n', ' ')
+            "text":  sub.content
         }
 
     return json_data

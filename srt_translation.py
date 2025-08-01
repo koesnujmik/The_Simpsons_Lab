@@ -1,5 +1,6 @@
 import srt
 import os
+import re
 import vertexai
 from vertexai.generative_models import GenerativeModel
 from prompts import TRANSLATOR_PROMPT
@@ -20,7 +21,7 @@ def translate_srt_to_korean(input_path: str, output_path: str):
     # 3. 번역 모델 초기화
     vertexai.init(project=PROJECT_ID, location=LOCATION)
     model = GenerativeModel(
-        "gemini-2.5-flash",
+        "gemini-2.5-pro",
         system_instruction=TRANSLATOR_PROMPT
     )
     chat = model.start_chat()
@@ -30,10 +31,18 @@ def translate_srt_to_korean(input_path: str, output_path: str):
     for sub in subtitles:
         # 줄바꿈을 제거하고 번역 요청
         src = sub.content.replace('\n', ' ')
+        src = src.replace('<i>', '')
+        src = src.replace('</i>', '')
+        src = src.replace('-', '\n')
+        src = re.sub(r'\(.*?\)', '', src)
         print("원본:", src)
-        response = chat.send_message(src)
-        kr_text = response.text
-        print("번역:", kr_text)
+        
+        if re.search(r'\w', src):
+            response = chat.send_message(src)
+            kr_text = response.text
+            print("번역:", kr_text)
+        else:
+            kr_text = "None_None"
 
         # 새 Subtitle 생성
         translated_subs.append(
