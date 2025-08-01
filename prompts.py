@@ -101,6 +101,7 @@ Align them strictly with the dialogue transitions or natural scene breaks as ind
 # Output
 Return exactly 5 clips in JSON list format only, with no surrounding text or formatting.
 """
+
 # LLM2의 편집 프롬프트
 LLM2_PROMPT_TEMPLATE = Template("""
 # System Message
@@ -132,9 +133,10 @@ Each cut item MUST be an object with:
 - "start_sub_id": integer (>= ${start_sub_id})
 - "end_sub_id": integer (<= ${end_sub_id})
 - "subtitle_ids": array[int]  // the exact subtitle lines you used in this cut
-- At least one of:
-- "narration": string
-- "editor_note": string
+- narration and editor_note should be added **only when necessary** to improve clarity, humor, or storytelling.
+- narration is limited to **2 or 3 instances** across the entire set of cuts.
+- editor_note should appear **no more than 5 times total**.
+- It is perfectly fine for a cut to have neither narration nor editor_note if the subtitles are sufficient on their own.
                                 
 Please output:
 - A funny and catchy **title** for the short video.
@@ -155,7 +157,6 @@ Please output:
 Each cut can include:
 - `narration`: (Optional) Describe a key visual moment or what’s happening.
 - Use **exact subtitle lines** from the provided subtitles.
-- Do NOT split or paraphrase subtitles. Caption = subtitle line.
 - `editor_note`: (Optional) Text overlay or meme-like comment to enhance humor.
 
 ⚠️ Not every cut needs all fields. Only include the ones that make the moment funnier or clearer.
@@ -172,6 +173,11 @@ Each cut can include:
 - The very first narration (in the first cut) can include a short explanation of the background or the situation leading into the scene if context is needed.
 - Each cut MUST include a non-empty list of subtitle_ids corresponding to the subtitle lines used in that cut.
 - Do not omit "subtitle_ids", even if narration or editor_note is present.
+- Limit narration to 2 or 3 instances throughout the entire set of cuts to avoid overuse.
+- Ensure narration does not repeat or paraphrase any subtitle lines verbatim; instead, use it to briefly explain or add vivid, contextual information that helps viewers understand the scene.
+- Place narration primarily at the beginning or key transitional moments to establish context and enhance storytelling.
+- Avoid having narration overlap or compete with subtitles to maintain clarity and keep the flow natural.
+- Editor_notes should creatively add humor or emphasize emotions using Korean memes, slang, or visual commentary, without redundant narration content.
 
 
                                     
@@ -180,12 +186,13 @@ Each cut can include:
 - The `"cuts"` field must be a list of **multiple cuts** (typically 5–10), where each item is a dictionary with:
     - "start" (float, seconds since full video start)
     - "end" (float)
-    - And at least one of: "narration" or "editor_note"
 - The **combined total duration** of all cuts should be **between 60 and 80 seconds**.
 - Do **not** return a single cut dictionary — always wrap it in a "cuts" list.
 - Do **not** use "cut" or any variation — only use "cuts" (plural).
 - Do **not** wrap the entire response in a list.
-- Narration/editor_note should be used where needed to clarify context or enhance humor.
+- narration and editor_note should be used only when needed to clarify context or add humor.
+- narration is limited to 2–3 times per clip, and editor_note should not be used more than 5 times total.
+- Do not include narration or editor_note in every cut — use them selectively to support storytelling.
 - Total duration of all cuts combined should be around **65–80 seconds** (not strict).
     - If the allowed subtitle range is too short to meet the duration, just use as much as possible from that range without padding or repetition.
 - Respond with only the JSON — no Markdown, no code blocks, no prose.
