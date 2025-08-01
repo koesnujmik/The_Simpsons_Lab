@@ -38,6 +38,22 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
     # 중앙 배치할 y좌표(본문 영상을 세로 방향으로 어디에 배치할지를 결)
     video_y = (FRAME_H - VID_H) / 2
+    
+def auto_linebreak(text, font, max_width):
+    lines = []
+    words = text.split()
+    line = ""
+
+    for word in words:
+        test_line = f"{line} {word}".strip()
+        w, _ = font.getsize(test_line)
+        if w <= max_width:
+            line = test_line
+        else:
+            lines.append(line)
+            line = word
+    lines.append(line)
+    return lines
 
     # — 멀티라인 중앙 정렬 텍스트 생성 유틸
     def make_textclip(text, fontsize, color, box_size, y_offset, line_spacing=10, duration=1):
@@ -46,8 +62,11 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
         font = ImageFont.truetype(font_path, fontsize)
         draw = ImageDraw.Draw(img)
 
+        # 자동 줄바꿈 처리: 최대 width 기준
+        wrapped_lines = auto_linebreak(text, font, max_width=box_size[0] - 40)
+
         # ② 줄별 텍스트 크기 측정 & 중앙 정렬
-        lines = text.split("\n")
+        lines = wrapped_lines    
         sizes = [draw.textbbox((0,0), line, font=font)[2:] for line in lines]
 
         y = y_offset
