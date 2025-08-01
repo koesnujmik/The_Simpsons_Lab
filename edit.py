@@ -38,6 +38,22 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
     # 중앙 배치할 y좌표(본문 영상을 세로 방향으로 어디에 배치할지를 결)
     video_y = (FRAME_H - VID_H) / 2
+    
+    def auto_linebreak(text, font, max_width):
+        lines = []
+        words = text.split()
+        line = ""
+
+        for word in words:
+            test_line = f"{line} {word}".strip()
+            w, _ = font.getsize(test_line)
+            if w <= max_width:
+                line = test_line
+            else:
+                lines.append(line)
+                line = word
+        lines.append(line)
+        return lines
 
     # — 멀티라인 중앙 정렬 텍스트 생성 유틸
     def make_textclip(text, fontsize, color, box_size, y_offset, line_spacing=10, duration=1):
@@ -46,8 +62,11 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
         font = ImageFont.truetype(font_path, fontsize)
         draw = ImageDraw.Draw(img)
 
+        # 자동 줄바꿈 처리: 최대 width 기준
+        wrapped_lines = auto_linebreak(text, font, max_width=box_size[0] - 40)
+
         # ② 줄별 텍스트 크기 측정 & 중앙 정렬
-        lines = text.split("\n")
+        lines = wrapped_lines    
         sizes = [draw.textbbox((0,0), line, font=font)[2:] for line in lines]
 
         y = y_offset
@@ -108,7 +127,8 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
     #전체 배경
     bg  = ColorClip((FRAME_W, FRAME_H), color=(0,0,0)).set_duration(dur)
-    vid_crop = intro_raw.crop(x_center=intro_raw.w/2, y_center=intro_raw.h/2,width=VID_W, height=VID_H)
+    vid_resized = intro_raw.resize(height=VID_H)
+    vid_crop = vid_resized.crop(width=VID_W, height=VID_H, x_center=vid_resized.w / 2, y_center=vid_resized.h / 2)
     vid = vid_crop.set_position(("center", video_y))
 
     # (3) 타이틀/서브타이틀 오버레이
@@ -136,7 +156,8 @@ def generate_video_from_json(srt_path, json_path, intro_video, trim_video, outpu
 
 
         # 본문도 동일한 크롭 & 중앙 배치(중심 좌표를 기준으로 좌우로 360픽셀, 상하로 240픽셀씩 잘라서 -> 720*480 영역만 추출함)
-        vid_crop = sub.crop(x_center=sub.w/2, y_center=sub.h/2,width=VID_W, height=VID_H)
+        vid_resized = sub.resize(height=VID_H)
+        vid_crop = vid_resized.crop(width=VID_W, height=VID_H, x_center=vid_resized.w / 2, y_center=vid_resized.h / 2)
         vid = vid_crop.set_position(("center", video_y))
 
         over = [
