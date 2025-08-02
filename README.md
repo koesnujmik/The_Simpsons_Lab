@@ -64,20 +64,13 @@ A JSON file containing:
 ]
 
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-<div align="center">
-  <img src="PATH_TO_YOUR_IMAGE/4989c7bd-6b74-4838-9cda-c9d433a81ec2.png" width="850"/>
-</div>
-
-**Step 1 — Scene Analysis**  
-: Gemini 2.5 (LLM1) analyzes the full Simpsons episode and selects the top-5 funniest clips based on laughter-related cues.
-
-**Step 2 — Shorts Edit Planning**  
-: Gemini 2.5 (LLM2) combines highlight data and subtitle files to generate a Shorts Edit Plan JSON including timing, captions, and narration.
-
-**Step 3 — Video Generation**  
-: MoviePy renders the final MP4 video with all edits applied, ready for upload to YouTube Shorts.
+- **LLM Agents**: Gemini 2.5 (LLM1 & LLM2) for scene scoring and editing plan generation
+- **Video Editing**: [MoviePy](https://zulko.github.io/moviepy/) for programmatic video rendering
+- **Voice Synthesis**: [gTTS](https://pypi.org/project/gTTS/) (Google Text-to-Speech) for narration generation
+- **Subtitles**: `.srt` parsing and timed overlay rendering
+- **Language**: Python 3.10+
 
 
 ### Our Team
