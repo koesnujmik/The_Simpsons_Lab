@@ -3,8 +3,6 @@ Prompetheus 2025-1 Project
 
 <div align="center">
 <img width="416" height="232" alt="image" src="https://github.com/user-attachments/assets/1a8749c8-c3af-4c05-965f-68fe82dc9a8d" />
-<img width="450" height="257" alt="image" src="https://github.com/user-attachments/assets/39f9407f-dd7d-43d8-9e72-8f8556bd0a3c" />
-
 </div>
 
 ## 📘 Overview
@@ -65,6 +63,9 @@ A JSON file containing:
 
 
 
-**Welcome to The Simpsons Lab.**  
+**Welcome to The Simpsons Lab.**
+<div align="center">
+<img width="1084" height="615" alt="image" src="https://github.com/user-attachments/assets/72dd91a6-9c3e-4579-81f4-22b0bc279179" />
+</div>
 _— Director, Junseok Kim, Wonjun Lee, Youngwoong Kim, Soobin Hwang_
 
