@@ -63,13 +63,8 @@ A JSON file containing:
   },
 ]
 
-### Our Team
-<div align="center">
-<img width="1084" height="615" alt="image" src="https://github.com/user-attachments/assets/72dd91a6-9c3e-4579-81f4-22b0bc279179" />
-</div>
 
-
-## 🧠 Illustration of Framework
+## Technology Stack
 
 <div align="center">
   <img src="PATH_TO_YOUR_IMAGE/4989c7bd-6b74-4838-9cda-c9d433a81ec2.png" width="850"/>
@@ -83,6 +78,14 @@ A JSON file containing:
 
 **Step 3 — Video Generation**  
 : MoviePy renders the final MP4 video with all edits applied, ready for upload to YouTube Shorts.
+
+
+### Our Team
+<div align="center">
+<img width="1084" height="615" alt="image" src="https://github.com/user-attachments/assets/72dd91a6-9c3e-4579-81f4-22b0bc279179" />
+</div>
+
+
 
 
 
