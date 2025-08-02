@@ -53,7 +53,7 @@ Automatically identify the funniest clips across an entire Simpsons episode and 
 
 **Output**  
 A JSON file containing:
-```json
+
 [
   {
     "start_time": 162,
@@ -61,7 +61,6 @@ A JSON file containing:
     "score": 9.2,
     "description": "Homer sets off a fire alarm while panicking over a donut."
   },
-  ...
 ]
 
 ### Our Team
