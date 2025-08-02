@@ -25,9 +25,7 @@ It explores a deeper question:
 We believe this is the world’s **first research project on AI-powered humor editing** —  
 a bold attempt at the intersection of media automation, affective computing, and narrative intelligence.
 
-<div align="center">
-<img width="1084" height="615" alt="image" src="https://github.com/user-attachments/assets/72dd91a6-9c3e-4579-81f4-22b0bc279179" />
-</div>
+
 
 ## 🚀 Pipeline
 
@@ -66,6 +64,10 @@ A JSON file containing:
 
 
 
+
+<div align="center">
+<img width="1084" height="615" alt="image" src="https://github.com/user-attachments/assets/72dd91a6-9c3e-4579-81f4-22b0bc279179" />
+</div>
 
 **Welcome to The Simpsons Lab.**
 _— Director, Junseok Kim, Wonjun Lee, Youngwoong Kim, Soobin Hwang_
