@@ -23,6 +23,44 @@ It explores a deeper question:
 We believe this is the world’s **first research project on AI-powered humor editing** —  
 a bold attempt at the intersection of media automation, affective computing, and narrative intelligence.
 
+## 🚀 Pipeline
+
+The Simpsons Lab operates through a 3-stage pipeline powered by LLM-based scene understanding and automated video editing.
+
+---
+
+### 🟡 Step 1 – Scene Analysis & Highlight Selection
+
+**🎯 Goal**  
+Automatically identify the funniest clips across an entire Simpsons episode and generate metadata describing each clip.
+
+**🧠 Process**
+
+- **Full Video Segmentation**:  
+  The Gemini Agent (LLM1) analyzes the full episode by splitting it into 2-minute segments.
+
+- **Humor Scoring**:  
+  Each segment is evaluated using a prompt that includes predefined humor cues (e.g., screams, ad-libs, explosions), scoring each on a 1–10 scale.
+
+- **Top 5 Clip Selection & Summarization**:  
+  The five clips with the highest humor scores are selected. Each is automatically described in natural language.
+
+**📦 Output**  
+A JSON file containing:
+```json
+[
+  {
+    "start_time": 162,
+    "end_time": 174,
+    "score": 9.2,
+    "description": "Homer sets off a fire alarm while panicking over a donut."
+  },
+  ...
+]
+
+
+
+
 **Welcome to The Simpsons Lab.**  
 _— Director, Junseok Kim, Wonjun Lee, Youngwoong Kim, Soobin Hwang_
 
